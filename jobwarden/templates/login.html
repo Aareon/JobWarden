@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width"/>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <title>Login | JobWarden</title>
+</head>
+
+<body>
+<div class="container">
+    <div style="margin-top: 145px;" class="meta">
+        <div class="login">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="{{ category }}">
+                <p>{{ message }}</p>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+            <h2>Login
+                <h2>
+                    <!-- smallprint on the login page -->
+                    <p id="smallprint">Use your employee login credentials to access JobWarden</p>
+                    <form method="post" action="">
+                        <input required style="width: 95%;" type="text" name="username" placeholder="Username">
+                        <input style="width: 95%;" type="password" name="password" placeholder="Password: (*******)">
+                        <input style="width: 98%;" id="submit" type="submit" value="Login">
+                        <a href="/register">
+                            <button id="cancel" type="button" name="button">Sign up</button>
+                        </a>
+                    </form>
+        </div>
+    </div>
+
+</div>
+</body>
+
+</html>

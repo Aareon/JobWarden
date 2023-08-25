@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"> -->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <!--
+        <a class="navbar-brand" href="#">JobWarden</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                {% if session.is_admin %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin">Admin</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/employees">Employees</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/customers">Customers</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/jobs">Jobs</a>
+                </li>
+                {% endif %}
+                <div class="w3-dropdown-hover w3-right">
+                      <button class="w3-button">Logged in as {{ session.username }}</button>
+                      <div class="w3-dropdown-content w3-bar-block w3-border" style="right:0">
+                        <a href="#" class="w3-bar-item w3-button">Profile</a>
+                        <a href="#" class="w3-bar-item w3-button">Settings</a>
+                        <hr class="solid">
+                        <a href="/logout" class="w3-bar-item w3-button">Logout</a>
+                    </div>
+                </div>
+            </ul>
+        </div>
+    </nav>
+
+
+    <!-- Include Materialize JavaScript (at the end of the body) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <script>
+        // Initialize dropdown
+        document.addEventListener('DOMContentLoaded', function() {
+          var elems = document.querySelectorAll('.dropdown-trigger');
+          var instances = M.Dropdown.init(elems, {
+            alignment: 'left', // Adjust the alignment as needed
+            constrainWidth: true, // Disable width constraint
+            coverTrigger: true // Show the dropdown content below the trigger
+          });
+        });
+    </script>
+
+</body>
+
+</html>

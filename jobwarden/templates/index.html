@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width"/>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
+    <title>JobWarden</title>
+</head>
+<body>
+{% include 'navbar.html' %}
+<!-- header -->
+<!--<div class="header_all">
+  <h1>SourceCAD</h1>
+</div>-->
+<!--<img class="image-top" src="image/banner.png" alt=""> -->
+<div class="container">
+
+    <div class="meta">
+        <div class="departments">
+            <!-- onclick inside '' is link where they want to go. -->
+            {% if session.is_admin %}
+            <h1>test</h1>
+            <form action="/dispatch" method="GET">
+                <div style="text-align: center; margin: auto;">
+                    <button class="button-dispatch" type="submit">Dispatcher</button>
+                </div>
+            </form>
+            {% endif %}
+            {% if session.is_police %}
+            <form action="/police" method="GET">
+                <div style="text-align: center;">
+                    <button class="button-leo" type="submit">Law Enforcement</button>
+                </div>
+            </form>
+            {% endif %}
+            {% if session.is_civilian %}
+            <form action="/civilian" method="GET">
+                <center>
+                    <button class="button-civ" type="submit">Civilian</button>
+                </center>
+            </form>
+            {% endif %}
+            {% if session.is_admin %}
+            <form action="/admin" method="GET">
+                <center>
+                    <button class="button-admin" type="submit">Admin</button>
+                </center>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% include 'footer.html' %}
+</body>
+</html>

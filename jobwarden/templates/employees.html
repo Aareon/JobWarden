@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width"/>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
+    <title>Employees | JobWarden</title>
+
+    <script>
+        function goBack() {
+          window.history.back()
+        }
+    </script>
+</head>
+
+<header>
+    <!--
+    <div class="back">
+      <button onclick="goBack()" class="button_back" type="button" name="button">Back</button>
+    </div>
+    -->
+</header>
+<body>
+{% include 'navbar.html' %}
+<div class="admin_container">
+
+    <div class="tables">
+        <div class="user_table">
+            <form method="POST" action="/change-employees">
+                <table style="float:left;width:100%;">
+                    <caption>Users</caption>
+                    <tr>
+                        <th>User</th>
+                        <th>Roles</th>
+                        <th>User Snowflake</th>
+                    </tr>
+                    <!-- in onclick="%edit%" change the hash to edit portion -->
+                    {% for user in users %}
+                    <tr onclick="#">
+                        <td><span {% if user.is_admin %} style="color:red;" {% endif %}>{{user.username}}</span></td>
+                        <!--<td>{{user[1][0] + user[1][1:].lower()}}</td>-->
+                        <td>
+                            <select name="rank-names" onclick="#">
+                                <option value="current_rank">{{user[1][0] + user[1][1:].lower()}}</option>
+                                {% for rank in ranks %}
+                                {% if rank != user[1] %}
+                                <option value="{{ rank }}">{{rank[0] + rank[1:].lower()}}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+
+                        </td>
+                        <td>{{user[2]}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                <input style="width:20%; float:right;" id="submit-employees" type="submit" value="Submit">
+            </form>
+        </div>
+
+        <div class="activity_table">
+            <table style="margin-right:20px;">
+                <caption>User Activity</caption>
+                <tr>
+                    <th>User</th>
+                    <th>Rank</th>
+                    <th>Last Login Date</th>
+                    <th>Last Login Time</th>
+                </tr>
+                <!-- in onclick="%edit%" change the hash to a edit portion -->
+                {% for login in logins %}
+                <tr onclick="#">
+                    <td>{{ login[0] }}</td> <!-- username -->
+                    <td>{{ login[1][0] + login[1][1:].lower() }}</td> <!-- rank -->
+                    <td>{{ login[2] }}</td> <!-- login_date -->
+                    <td>{{ login[3] }}</td> <!-- login_time -->
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+    <div class="admin-forms">
+        <form method="POST" action="">
+            <div class="registration-admin">
+                <p id="mini-header-admin">User Applications</p>
+                {% for applicant in applicants %}
+                <div id="single-registration">
+                    <strong>Username: </strong>{{applicant['username']}} <strong>Email:</strong> {{applicant['email']}}
+                    <input name="Approve" id="submit" style="width:10%;" type="submit" value="Approve">
+                    <input name="Reject" id="remove" style="width:10%;" type="submit" value="Reject">
+                    <input type="hidden" name="username" id="username" value={{applicant['username']}}>
+                    <input type="hidden" name="email" id="email" value={{applicant['email']}}>
+                </div>
+                {% endfor %}
+            </div>
+        </form>
+    </div>
+</div>
+</body>

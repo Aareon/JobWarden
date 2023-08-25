@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width"/>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
+    <title>Customers | JobWarden</title>
+</head>
+
+<header>
+    {% include 'navbar.html' %}
+</header>
+
+<body>
+<div class="admin_container">
+
+    <div class="admin-forms">
+            <div class="adduser">
+                <form method="POST" action="">
+                    {% if session.error is not none %}
+                    <caption>{{session.error}}</caption>
+                    {% endif %}
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                    {% for category, message in messages %}
+                    <div class="{{ category }}">
+                        <p>{{ message }}</p>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+                    <input style="width:98%;" type="text" name="name" placeholder="Customer Name">
+                    <input style="width:98%;" type="text" name="email" placeholder="Email">
+                    <input style="width:98%;" type="text" name="phone" placeholder="Phone Number">
+                    <input style="width:98%;" type="text" name="license" placeholder="License Number">
+                    <input style="width:98%;" type="text" name="bday" placeholder="Birth Date">
+                    <input id="submit" style="width:98%;" type="submit" name="addUser" value="Create Customer">
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="tables">
+        <div class="activity_table">
+            <table style="margin-right:20px;">
+                <caption>Customer Job Activity</caption>
+                <tr>
+                    <th>JCN</th>
+                    <th>Equipment Type</th>
+                    <th>Created Datetime</th>
+                    <th>Completed Datetime</th>
+                    <th>Completed By</th>
+                </tr>
+                <!-- in onclick="%edit%" change the hash to a edit portion -->
+                {% for job in jobs %}
+                <tr onclick="#">
+                    <td>{{ job[0] }}</td> <!-- jcn -->
+                    <td>{{ job[1] }}</td> <!-- equipment type -->
+                    <td>{{ job[2] }}</td> <!-- created_datetime -->
+                    <td>{{ job[3] }}</td> <!-- completed_datetime -->
+                    <td>{{ job[4] }}</td> <!-- completed_by -->
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+</div>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="viewport" content="width=device-width" />
+   <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}" />
+   <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
+   <title>Jobs | JobWarden</title>
+</head>
+
+<header>
+  {% include "navbar.html" %}
+</header>
+
+<body>
+  <!--<div class="header_all">
+    <h1>SourceCAD</h1>
+  </div>-->
+
+  <div class="dispatch-container">
+    <div class="dispatch-buttons">
+      <button id="modalBtn" class="single_button" type="button" name="button">New Job</button>
+    </div>
+
+    <div class="modal" id="simpleModal">
+      <div class="modal-content">
+        <span class="closeBtn">&times;</span>
+        <form border="border: 2px solid #eee;" method="POST" action="">
+          <input id="customers" type="text" style="width: 90%;" placeholder="Customer">
+          <!-- <input type="text" style="width: 90%;" placeholder=""> -->
+          <h3 style="font-family: 'Helvetica', Arial, sans-serif;margin-bottom:5px;">Equipment Type</h3><br>
+          <select id="unit_select" name="equipment_type" size="5">
+            <option value="Desktop">Desktop</option>
+            <option value="Laptop">Laptop</option>
+            <option value="Cellphone">Cellphone</option>
+            <option value="Tablet">Tablet</option>
+            <option value="Console">Console</option>
+          </select>
+          <input type="text" style="width: 90%;" placeholder="Equipment Description">
+          <button id="officer_submit" type="button" name="button">Create job</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="dispatch-callout">
+      <h1>Open jobs:</h1>
+      <div class="dispatch-calls">
+        <div class="dispatch-callout-current">
+          {{callouts}}<br>
+          <button id="modalBtn" class="edit_btn" type="button" name="button">Edit</button>
+        </div>
+      </div>
+    </div>
+    <div class="dispatch-bolos">
+      <h1>Jobs awaiting order(s):</h1>
+      <div class="dispatch-calls">
+        <div class="dispatch-callout-current">
+          {{bolos}}
+          <button id="modalBtn" class="edit_btn" type="button" name="button">Edit</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/dispatch.js') }}"></script>
+  <script>
+    $( function() {
+    var allCustomers = [
+        {% for customer in customers %}
+            "{{customer}}",
+        {% endfor %}
+    ];
+    $( "#customemrs" ).autocomplete({
+      source: allCustomers
+    });
+  } );
+  </script>
+
+</body>
+
+</html>

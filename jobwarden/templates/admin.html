@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width"/>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
+    <title>Admin | JobWarden</title>
+</head>
+
+<header>
+    {% include 'navbar.html' %}
+</header>
+
+<body>
+<div class="admin_container">
+
+    <div class="tables">
+        <div class="activity_table">
+            <table style="margin-right:20px;">
+                <caption>User Activity</caption>
+                <tr>
+                    <th>User</th>
+                    <th>Rank</th>
+                    <th>Last Login Datetime</th>
+                </tr>
+                <!-- in onclick="%edit%" change the hash to a edit portion -->
+                {% for login in logins %}
+                <tr onclick="#">
+                    <td>{{ login[0] }}</td> <!-- username -->
+                    <td>{{ login[1][0] + login[1][1:].lower() }}</td> <!-- rank -->
+                    <td>{{ login[2] }}</td> <!-- login_date -->
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div class="admin-forms">
+            <div class="adduser">
+                <form method="POST" action="">
+                    {% if session.error is not none %}
+                    <caption>{{session.error}}</caption>
+                    {% endif %}
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                    {% for category, message in messages %}
+                    <div class="{{ category }}">
+                        <p>{{ message }}</p>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+                    <input style="width:98%;" type="text" name="username" placeholder="Username">
+                    <input style="width:98%;" type="text" name="email" placeholder="Email">
+                    <h4 style="display:inline;">Admin:</h4> <input
+                        style="display:inline;margin-top:4px;margin-bottom:0px;" id="check" type="checkbox"
+                        name="is_admin"><br>
+                    <input id="submit" style="width:98%;" type="submit" name="addUser" value="Create User">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
