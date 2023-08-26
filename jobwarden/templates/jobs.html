@@ -3,9 +3,11 @@
 
 <head>
   <meta name="viewport" content="width=device-width" />
-   <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}" />
-   <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
-   <title>Jobs | JobWarden</title>
+  <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}" />
+  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
+
+  <title>Jobs | JobWarden</title>
 </head>
 
 <header>
@@ -26,16 +28,32 @@
       <div class="modal-content">
         <span class="closeBtn">&times;</span>
         <form border="border: 2px solid #eee;" method="POST" action="">
-          <input id="customers" type="text" style="width: 90%;" placeholder="Customer">
+          <div class="container mt-4">
+            <h1>Create a job</h1>
+            <div class="form-group">
+              <input type="text" id="customer-search" class="form-control" placeholder="Customer">
+              <ul id="results" class="list-group mt-2"></ul>
+            </div>
+          </div>
           <!-- <input type="text" style="width: 90%;" placeholder=""> -->
-          <h3 style="font-family: 'Helvetica', Arial, sans-serif;margin-bottom:5px;">Equipment Type</h3><br>
-          <select id="unit_select" name="equipment_type" size="5">
+          <!-- <h3 style="font-family: 'Helvetica', Arial, sans-serif;margin-bottom:5px;">Equipment Type</h3><br> -->
+          <label for="browser">Select equipment type:</label>
+          <input list="types" name="equipment" id="equipment">
+          <datalist id="types">
+            <option value="Desktop">
+            <option value="Laptop">
+            <option value="Cellphone">
+            <option value="Tablet">
+            <option value="Console">
+          </datalist>
+          <!--<select id="unit_select" name="equipment_type" size="5">
             <option value="Desktop">Desktop</option>
             <option value="Laptop">Laptop</option>
             <option value="Cellphone">Cellphone</option>
             <option value="Tablet">Tablet</option>
             <option value="Console">Console</option>
           </select>
+          -->
           <input type="text" style="width: 90%;" placeholder="Equipment Description">
           <button id="officer_submit" type="button" name="button">Create job</button>
         </form>
@@ -65,16 +83,38 @@
 
   <script src="{{ url_for('static', filename='js/dispatch.js') }}"></script>
   <script>
-    $( function() {
-    var allCustomers = [
-        {% for customer in customers %}
-            "{{customer}}",
-        {% endfor %}
-    ];
-    $( "#customemrs" ).autocomplete({
-      source: allCustomers
+    document.addEventListener("DOMContentLoaded", () => {
+      // autocomplete
+      document.querySelector("#customer-search").addEventListener("input", (event) => {
+        const search_term = event.target.value;
+        const results = document.querySelector("#results");
+
+        // Check if the search term is empty
+        if (!search_term) {
+          results.innerHTML = ""; // Clear the results
+          return;
+        }
+
+        const xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            const data = JSON.parse(xhr.responseText);
+            results.innerHTML = ""; // Clear the results
+            data.forEach(function (item) {
+              const listItem = document.createElement("li");
+              listItem.className = "list-group-item";
+              listItem.textContent = item;
+              results.appendChild(listItem);
+            });
+          }
+        };
+
+        xhr.open("GET", `/autocomplete?term=${encodeURIComponent(search_term)}`, true);
+        xhr.send();
+
+      });
     });
-  } );
+
   </script>
 
 </body>

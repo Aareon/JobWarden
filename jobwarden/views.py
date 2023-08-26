@@ -1,4 +1,4 @@
-from flask import render_template, url_for, session, redirect, request, flash
+from flask import render_template, url_for, session, redirect, request, flash, jsonify
 from jobwarden.app import app
 from jobwarden.database import Database, Rank
 from passlib.hash import bcrypt
@@ -160,7 +160,18 @@ def jobs():
     recheck_login(session)
     # jobs = db.get_all_jobs()
     customers = db.get_customer_names()
-    return render_template("jobs.html", customers=customers)
+    for customer in customers:
+        print(customer.name)
+    return render_template("jobs.html", customers=[c.name for c in customers])
+
+
+@app.route("/autocomplete", methods=["GET"])
+def autocomplete():
+    search_term = request.args.get("term")
+    print(f"Search term: {search_term}")
+    customers = db.get_customer_names()
+    results = [item.name for item in customers if search_term.lower() in item.name.lower()]
+    return jsonify(results)
 
 
 @app.route("/customers", methods=["GET", "POST"])
